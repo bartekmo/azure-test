@@ -4,7 +4,7 @@
 	"parameters" : {
 		"vmName": {
 			"type": "string",
-			"defaultValue": "BarracudaNextGenFW",
+			"defaultValue": "BarracudaNGF",
 			"metadata": {
 				"description": "Name of the primary VM"
 			}
