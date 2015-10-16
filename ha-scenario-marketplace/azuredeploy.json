@@ -4,6 +4,7 @@
 	"parameters" : {
 		"vmName": {
 			"type": "string",
+			"defaultValue": "BarracudaNG",
 			"metadata": {
 				"description": "Name of the primary VM"
 			}
@@ -16,9 +17,9 @@
 		},
 		"virtualNetworkName": {
 			"type": "string",
-			"defaultValue" : "VNet",
+			"defaultValue" : "myVNet",
 			"metadata": {
-				"description": "Name of Virtual Network"
+				"description": "Name of Virtual Network to create"
 			}
 		},
 		"vnetAddressSpace": {
@@ -35,21 +36,21 @@
 				"description": "Name of gateway subnet"
 			}
 		},
-		"gatewaySubnetCIDRBlock": {
+		"gatewaySubnetCidrBlock": {
 			"type": "string",
 			"defaultValue": "10.0.0.0/24",
 			"metadata": {
 				"description": "Gateway subnet address prefix in CIDR format"
 			}
 		},
-		"Tier1SubnetCIDRBlock": {
+		"Tier1SubnetCidrBlock": {
 			"type": "string",
 			"defaultValue": "10.0.1.0/24",
 			"metadata": {
 				"description": "Tier 1 subnet address prefix in CIDR format"
 			}
 		},
-		"Tier2SubnetCIDRBlock": {
+		"Tier2SubnetCidrBlock": {
 			"type": "string",
 			"defaultValue": "10.0.2.0/24",
 			"metadata": {
@@ -73,6 +74,7 @@
 		"location": {
 			"type": "string",
 			"allowedValues": ["North Europe", "West Europe", "Central US", "Sourth Central US", "East US", "West US", "North Central US", "East US 2", "East Asia", "Southeast Asia", "Japan East", "Japan West", "Brasil South" ],
+			"defaultValue": "West Europe",
 			"metadata" : {
 				"description" : "Location to deploy"
 			}
@@ -161,7 +163,7 @@
 		  {
 			"name": "[parameters('gatewaySubnetName')]",
 			"properties" : {
-				"addressPrefix": "[parameters('gatewaySubnetCIDRBlock')]"
+				"addressPrefix": "[parameters('gatewaySubnetCidrBlock')]"
 			}
 		  }
 		]
@@ -364,7 +366,7 @@
 				"computername": "[parameters('vmName')]",
 				"adminUsername": "[variables('adminUsername')]",
 				"adminPassword": "[parameters('adminPassword')]",
-				"customData" : "[base64(concat('{\"version\" : \"1.0\", \"dha\" : { \"flags\" : [\"primary\"], \"ip\" : \"', parameters('primaryBoxPrivateIP'), '\", \"haip\" : \"', parameters('secondaryBoxPrivateIP'), '\", \"gateway\" : \"', parameters('gatewaySubnetCIDRBlock'), '\", \"password\" : \"', parameters('adminPassword'), '\" }}'))]"
+				"customData" : "[base64(concat('{\"version\" : \"1.0\", \"dha\" : { \"flags\" : [\"primary\"], \"ip\" : \"', parameters('primaryBoxPrivateIP'), '\", \"haip\" : \"', parameters('secondaryBoxPrivateIP'), '\", \"gateway\" : \"', parameters('gatewaySubnetCidrBlock'), '\", \"password\" : \"', parameters('adminPassword'), '\" }}'))]"
 			},
 			"storageProfile": {
 				"imageReference" : {
@@ -417,7 +419,7 @@
 				"computername": "[concat(parameters('vmName'),'ha')]",
 				"adminUsername": "[variables('adminUsername')]",
 				"adminPassword": "[parameters('adminPassword')]",
-				"customData" : "[base64(concat('{\"version\" : \"1.0\", \"dha\" : { \"haip\" : \"', parameters('secondaryBoxPrivateIP'), '\", \"gateway\" : \"', parameters('gatewaySubnetCIDRBlock'), '\", \"password\" : \"', parameters('adminPassword'), '\" }}'))]"
+				"customData" : "[base64(concat('{\"version\" : \"1.0\", \"dha\" : { \"haip\" : \"', parameters('secondaryBoxPrivateIP'), '\", \"gateway\" : \"', parameters('gatewaySubnetCidrBlock'), '\", \"password\" : \"', parameters('adminPassword'), '\" }}'))]"
 			},
 			"storageProfile": {
 				"imageReference" : {
