@@ -21,35 +21,49 @@
 				"description": "Name of Virtual Network"
 			}
 		},
-		"addressPrefix": {
+		"vnetAddressSpace": {
 			"type": "string",
 			"defaultValue": "10.0.0.0/16",
 			"metadata": {
 				"description": "VNET address prefix in CIDR format"
 			}
 		},
-		"subnet1Name": {
+		"gatewaySubnetName": {
 			"type": "string",
-			"defaultValue": "Subnet-1",
+			"defaultValue": "GatewaySubnet",
 			"metadata": {
-				"description": "Subnet 1 Name"
+				"description": "Name of gateway subnet"
 			}
 		},
-		"subnet1Prefix": {
+		"gatewaySubnetCIDRBlock": {
 			"type": "string",
 			"defaultValue": "10.0.0.0/24",
 			"metadata": {
-				"description": "Subnet 1 address prefix in CIDR format"
+				"description": "Gateway subnet address prefix in CIDR format"
 			}
 		},
-		"primaryHABoxIP" : {
+		"Tier1SubnetCIDRBlock": {
+			"type": "string",
+			"defaultValue": "10.0.1.0/24",
+			"metadata": {
+				"description": "Tier 1 subnet address prefix in CIDR format"
+			}
+		},
+		"Tier2SubnetCIDRBlock": {
+			"type": "string",
+			"defaultValue": "10.0.2.0/24",
+			"metadata": {
+				"description": "Tier 2 subnet address prefix in CIDR format"
+			}
+		},
+		"primaryBoxPrivateIP" : {
 			"type" : "string",
 			"defaultValue": "10.0.0.4",
 			"metadata" : {
 				"description" : "Static IP of active HA Box"
 			}
 		},
-		"secondaryHABoxIP" : {
+		"secondaryBoxPrivateIP" : {
 			"type" : "string",
 			"defaultValue": "10.0.0.5",
 			"metadata" : {
@@ -58,15 +72,16 @@
 		},
 		"location": {
 			"type": "string",
-			"allowedValues": ["East US", "West US", "West Europe", "East Asia", "Southeast Asia"],
+			"allowedValues": ["North Europe", "West Europe", "Central US", "Sourth Central US", "East US", "West US", "North Central US", "East US 2", "East Asia", "Southeast Asia", "Japan East", "Japan West", "Brasil South" ],
 			"metadata" : {
 				"description" : "Location to deploy"
 			}
 
 		},
-		"vmSize": {
+		"instanceSize": {
 			"type": "string",
-			"defaultValue" : "Standard_A0",
+			"allowedValues" : ["Small", "Medium", "Large" "Standard_D1", "Standard_D2", "Standard_D3" ],
+			"defaultValue" : "Standard_D1",
 			"metadata": {
 				"description": "This is the size of your VM"
 			}
@@ -95,7 +110,7 @@
 		"availabilitySetName" : "oneNGAlwaysUp",
 		"vnetID":"[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
 		"lbID" : "[resourceId('Microsoft.Network/loadBalancers',variables('lbName'))]",
-		"subnet1Ref" : "[concat(variables('vnetID'),'/subnets/',parameters('subnet1Name'))]",
+		"subnet1Ref" : "[concat(variables('vnetID'),'/subnets/',parameters('gatewaySubnetName'))]",
 		"publicIPAddressID": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]",
 		"frontEndIPConfigID": "[concat(variables('lbID'),'/frontendIPConfigurations/LoadBalancerFrontEnd')]",
 		"lbPoolID": "[concat(variables('lbID'),'/backendAddressPools/BackendPool1')]",
@@ -139,14 +154,14 @@
 	  "properties": {
 		"addressSpace": {
 		  "addressPrefixes": [
-			"[parameters('addressPrefix')]"
+			"[parameters('vnetAddressSpace')]"
 		  ]
 		},
 		"subnets": [
 		  {
-			"name": "[parameters('subnet1Name')]",
+			"name": "[parameters('gatewaySubnetName')]",
 			"properties" : {
-				"addressPrefix": "[parameters('subnet1Prefix')]"
+				"addressPrefix": "[parameters('gatewaySubnetCIDRBlock')]"
 			}
 		  }
 		]
@@ -167,7 +182,7 @@
 				"name": "ipconfig1",
 				"properties": {
 					"privateIPAllocationMethod": "Static",
-					"privateIPAddress" : "[parameters('primaryHABoxIP')]",
+					"privateIPAddress" : "[parameters('primaryBoxPrivateIP')]",
 					"subnet": {
 						"id": "[variables('subnet1Ref')]"
 					},
@@ -202,7 +217,7 @@
 				"name": "ipconfig2",
 				"properties": {
 					"privateIPAllocationMethod": "Static",
-					"privateIPAddress" : "[parameters('secondaryHABoxIP')]",
+					"privateIPAddress" : "[parameters('secondaryBoxPrivateIP')]",
 					"subnet": {
 						"id": "[variables('subnet1Ref')]"
 					},
@@ -343,13 +358,13 @@
 				"id": "[resourceId('Microsoft.Compute/availabilitySets',variables('availabilitySetName'))]"
 			},
 			"hardwareProfile": {
-				"vmSize": "[parameters('vmSize')]"
+				"vmSize": "[parameters('instanceSize')]"
 			},
 			"osProfile": {
 				"computername": "[parameters('vmName')]",
 				"adminUsername": "[variables('adminUsername')]",
 				"adminPassword": "[parameters('adminPassword')]",
-				"customData" : "[base64(concat('{\"version\" : \"1.0\", \"dha\" : { \"flags\" : [\"primary\"], \"ip\" : \"', parameters('primaryHABoxIP'), '\", \"haip\" : \"', parameters('secondaryHABoxIP'), '\", \"gateway\" : \"', parameters('subnet1Prefix'), '\", \"password\" : \"', parameters('adminPassword'), '\" }}'))]"
+				"customData" : "[base64(concat('{\"version\" : \"1.0\", \"dha\" : { \"flags\" : [\"primary\"], \"ip\" : \"', parameters('primaryBoxPrivateIP'), '\", \"haip\" : \"', parameters('secondaryBoxPrivateIP'), '\", \"gateway\" : \"', parameters('gatewaySubnetCIDRBlock'), '\", \"password\" : \"', parameters('adminPassword'), '\" }}'))]"
 			},
 			"storageProfile": {
 				"imageReference" : {
@@ -396,13 +411,13 @@
 				"id": "[resourceId('Microsoft.Compute/availabilitySets',variables('availabilitySetName'))]"
 			},
 			"hardwareProfile": {
-				"vmSize": "[parameters('vmSize')]"
+				"vmSize": "[parameters('instanceSize')]"
 			},
 			"osProfile": {
 				"computername": "[concat(parameters('vmName'),'ha')]",
 				"adminUsername": "[variables('adminUsername')]",
 				"adminPassword": "[parameters('adminPassword')]",
-				"customData" : "[base64(concat('{\"version\" : \"1.0\", \"dha\" : { \"haip\" : \"', parameters('secondaryHABoxIP'), '\", \"gateway\" : \"', parameters('subnet1Prefix'), '\", \"password\" : \"', parameters('adminPassword'), '\" }}'))]"
+				"customData" : "[base64(concat('{\"version\" : \"1.0\", \"dha\" : { \"haip\" : \"', parameters('secondaryBoxPrivateIP'), '\", \"gateway\" : \"', parameters('gatewaySubnetCIDRBlock'), '\", \"password\" : \"', parameters('adminPassword'), '\" }}'))]"
 			},
 			"storageProfile": {
 				"imageReference" : {
