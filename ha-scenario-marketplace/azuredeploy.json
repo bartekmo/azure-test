@@ -80,7 +80,7 @@
 		},
 		"instanceSize": {
 			"type": "string",
-			"allowedValues" : ["Small", "Medium", "Large" "Standard_D1", "Standard_D2", "Standard_D3" ],
+			"allowedValues" : ["Small", "Medium", "Large", "Standard_D1", "Standard_D2", "Standard_D3" ],
 			"defaultValue" : "Standard_D1",
 			"metadata": {
 				"description": "This is the size of your VM"
