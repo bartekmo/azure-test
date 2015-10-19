@@ -31,9 +31,9 @@
 		},
 		"gatewaySubnetName": {
 			"type": "string",
-			"defaultValue": "GatewaySubnet",
+			"defaultValue": "FirewallSubnet",
 			"metadata": {
-				"description": "Name of gateway subnet"
+				"description": "Name of firewall subnet"
 			}
 		},
 		"gatewaySubnetCidrBlock": {
