@@ -76,8 +76,8 @@
 		},
 		"numberOfBackendSubnets": {
 			"type": "int",
-			"defaultValue" : "3",
-			"allowedValues" : ["1","2","3","4"]
+			"defaultValue" : 3,
+			"allowedValues" : [1,2,3,4]
 			
 		},
 		"adminPassword": {
