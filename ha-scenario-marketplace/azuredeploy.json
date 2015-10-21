@@ -43,12 +43,6 @@
 				"description": "Gateway subnet address prefix in CIDR format"
 			}
 		},
-		"numberOfBackendSubnets": {
-			"type": "int",
-			"defaultValue" : "3",
-			"allowedValues" : ["1","2","3","4"]
-			
-		},
 		"primaryBoxPrivateIP" : {
 			"type" : "string",
 			"defaultValue": "10.0.0.4",
@@ -79,6 +73,12 @@
 			"metadata": {
 				"description": "This is the size of your VM"
 			}
+		},
+		"numberOfBackendSubnets": {
+			"type": "int",
+			"defaultValue" : "3",
+			"allowedValues" : ["1","2","3","4"]
+			
 		},
 		"adminPassword": {
 			"type": "securestring",
