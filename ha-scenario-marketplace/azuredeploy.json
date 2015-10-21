@@ -2,11 +2,11 @@
 	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
 	"contentVersion": "1.0.0.0",
 	"parameters" : {
-		"vmName": {
+		"firewallVmName": {
 			"type": "string",
 			"defaultValue": "BarracudaNGF",
 			"metadata": {
-				"description": "Name of the primary VM"
+				"description": "Name of the primary firewall VM"
 			}
 		},
 		"dnsNameForPublicIP" : {
@@ -45,7 +45,7 @@
 		},
 		"numberOfBackendSubnets": {
 			"type": "int",
-			"defautValue" : "3",
+			"defaultValue" : "3",
 			"allowedValues" : ["1","2","3","4"]
 			
 		},
@@ -91,7 +91,7 @@
 		"imagePublisher": "barracudanetworks",
 		"imageOffer": "barracuda-ng-firewall",
 		"imageSku": "byol",
-		"newStorageAccountName" : "[concat('ngstorage', replace(parameters('vmName'), '-', ''))]",
+		"newStorageAccountName" : "[concat('ngstorage', replace(parameters('firewallVmName'), '-', ''))]",
 		"vmStorageAccountContainerName" : "vhds",
 		"storageAccountType" : "Standard_LRS",
 		"publicIPAddressName": "myPublicIP",
@@ -110,7 +110,7 @@
 		"lbPoolID": "[concat(variables('lbID'),'/backendAddressPools/BackendPool1')]",
 		"lbSSLProbeID": "[concat(variables('lbID'),'/probes/tcpSSLProbe')]",
 		"lbVPNProbeID": "[concat(variables('lbID'),'/probes/tcpVPNProbe')]",
-		"routeTableName": "[concat('defaultvia', replace(parameters('vmName'), '-', ''))]",
+		"routeTableName": "[concat('defaultvia', replace(parameters('firewallVmName'), '-', ''))]",
 		"vnetAddressSpaceSplit" : "[split( parameters( 'vnetAddressSpace' ), [ '.', '/' ])]",
 		"vnetTwoOctets" : "[concat( vnetAddressSpaceSplit[0], '.', vnetAddressSpaceSplit[1] )]"
 	},
@@ -369,7 +369,7 @@
 	{
 		"apiVersion": "2015-05-01-preview",
 		"type": "Microsoft.Compute/virtualMachines",
-		"name": "[parameters('vmName')]",
+		"name": "[parameters('firewallVmName')]",
 		"location": "[parameters('location')]",
 		"dependsOn": [
 			"[concat('Microsoft.Storage/storageAccounts/', variables('newStorageAccountName'))]",
@@ -389,7 +389,7 @@
 				"vmSize": "[parameters('instanceSize')]"
 			},
 			"osProfile": {
-				"computername": "[parameters('vmName')]",
+				"computername": "[parameters('firewallVmName')]",
 				"adminUsername": "[variables('adminUsername')]",
 				"adminPassword": "[parameters('adminPassword')]",
 				"customData" : "[base64(concat('{\"version\" : \"1.0\", \"dha\" : { \"flags\" : [\"primary\"], \"ip\" : \"', parameters('primaryBoxPrivateIP'), '\", \"haip\" : \"', parameters('secondaryBoxPrivateIP'), '\", \"gateway\" : \"', parameters('gatewaySubnetCidrBlock'), '\", \"password\" : \"', parameters('adminPassword'), '\" }}'))]"
@@ -402,11 +402,11 @@
 					"version": "latest"
 				},
 				"osDisk" : {
-					"name" : "[concat(parameters('vmName'),'-osDisk')]",
+					"name" : "[concat(parameters('firewallVmName'),'-osDisk')]",
 					"caching" : "ReadWrite",
 					"createOption" : "FromImage",
 					"vhd" : {
-						"uri" : "[concat('https://',variables('newStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',parameters('vmName'),'.vhd')]"
+						"uri" : "[concat('https://',variables('newStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',parameters('firewallVmName'),'.vhd')]"
 					}
 				}
 			},
@@ -422,7 +422,7 @@
 	{
 		"apiVersion": "2015-05-01-preview",
 		"type": "Microsoft.Compute/virtualMachines",
-		"name": "[concat(parameters('vmName'),'ha')]",
+		"name": "[concat(parameters('firewallVmName'),'ha')]",
 		"location": "[parameters('location')]",
 		"dependsOn": [
 			"[concat('Microsoft.Storage/storageAccounts/', variables('newStorageAccountName'))]",
@@ -442,7 +442,7 @@
 				"vmSize": "[parameters('instanceSize')]"
 			},
 			"osProfile": {
-				"computername": "[concat(parameters('vmName'),'ha')]",
+				"computername": "[concat(parameters('firewallVmName'),'ha')]",
 				"adminUsername": "[variables('adminUsername')]",
 				"adminPassword": "[parameters('adminPassword')]",
 				"customData" : "[base64(concat('{\"version\" : \"1.0\", \"dha\" : { \"haip\" : \"', parameters('secondaryBoxPrivateIP'), '\", \"gateway\" : \"', parameters('gatewaySubnetCidrBlock'), '\", \"password\" : \"', parameters('adminPassword'), '\" }}'))]"
@@ -455,11 +455,11 @@
 					"version": "latest"
 				},
 				"osDisk" : {
-					"name" : "[concat(parameters('vmName'),'-osDisk')]",
+					"name" : "[concat(parameters('firewallVmName'),'-osDisk')]",
 					"caching" : "ReadWrite",
 					"createOption" : "FromImage",
 					"vhd" : {
-						"uri" : "[concat('https://',variables('newStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',parameters('vmName'),'ha','.vhd')]"
+						"uri" : "[concat('https://',variables('newStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',parameters('firewallVmName'),'ha','.vhd')]"
 					}
 				}
 			},
