@@ -112,7 +112,8 @@
 		"lbVPNProbeID": "[concat(variables('lbID'),'/probes/tcpVPNProbe')]",
 		"routeTableName": "[concat('defaultvia', replace(parameters('firewallVmName'), '-', ''))]",
 		"vnetAddressSpaceSplit" : "[split( parameters( 'vnetAddressSpace' ), [ '.', '/' ])]",
-		"vnetTwoOctets" : "[concat( vnetAddressSpaceSplit[0], '.', vnetAddressSpaceSplit[1] )]"
+		"vnetTwoOctets" : "[concat( vnetAddressSpaceSplit[0], '.', vnetAddressSpaceSplit[1] )]",
+		"apiVer": "2015-06-15"
 	},
 	"resources": [
 	{
@@ -146,7 +147,7 @@
 	{
         	"type": "Microsoft.Network/routeTables",
         	"name": "[variables('routeTableName')]",
-        	"apiVersion": "2015-06-15",
+        	"apiVersion": "variables( 'apiVer' )",
         	"location": "[parameters('location')]",
         	"properties": {
             	"routes": [{
@@ -161,11 +162,11 @@
     	},
 	
 	{
-	  "apiVersion": "2015-05-01-preview",
+	  "apiVersion": "variables( 'apiVer' )",
 	  "type": "Microsoft.Network/virtualNetworks",
 	  "name": "[parameters('virtualNetworkName')]",
 	  "location": "[parameters('location')]",
-	  "dependsOn": "[concat('Microsoft.Network/routeTables/', variables('routeTableName'))]",
+	  "dependsOn": [ "[concat('Microsoft.Network/routeTables/', variables('routeTableName'))]" ],
 	  "properties": {
 		"addressSpace": {
 		  "addressPrefixes": [
