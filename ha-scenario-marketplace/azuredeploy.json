@@ -74,11 +74,6 @@
 				"description": "This is the size of your VM"
 			}
 		},
-		"numberOfBackendSubnets": {
-			"type": "string",
-			"defaultValue" : "3",
-			"allowedValues" : ["1", "2", "3" ]
-		},
 		"adminPassword": {
 			"type": "securestring",
 			"metadata": {
@@ -173,25 +168,39 @@
 		  ]
 		},
 		"subnets": [
-		  {
+		{
 			"name": "[parameters('gatewaySubnetName')]",
 			"properties" : {
 				"addressPrefix": "[parameters('gatewaySubnetCidrBlock')]"
 			}
-		  },
-		  {
-		  	"name": "[concat('Subnet-Tier', copyIndex())]",
+		},
+		{
+		  	"name": "Subnet-Tier1",
 		  	"properties" : {
-		  		"addressPrefix": "[concat(variables('vnetTwoOctets'), '.', copyIndex(), '.0/24')]",
+		  		"addressPrefix": "[concat(variables('vnetTwoOctets'), '.1.0/24')]",
 				"routeTable": {
                         		"id": "[resourceId('Microsoft.Network/routeTables', variables('routeTableName'))]"
                     			}
-		  	},
-		  	"copy" : {
-		  		"name" : "subnetsegments",
-		  		"count" : "[int( parameters( 'numberOfBackendSubnets' ))]"
 		  	}
-		  }
+		},
+		{
+		  	"name": "Subnet-Tier2",
+		  	"properties" : {
+		  		"addressPrefix": "[concat(variables('vnetTwoOctets'), '.2.0/24')]",
+				"routeTable": {
+                        		"id": "[resourceId('Microsoft.Network/routeTables', variables('routeTableName'))]"
+                    			}
+		  	}
+		},
+		{
+		  	"name": "Subnet-Tier3",
+		  	"properties" : {
+		  		"addressPrefix": "[concat(variables('vnetTwoOctets'), '.3.0/24')]",
+				"routeTable": {
+                        		"id": "[resourceId('Microsoft.Network/routeTables', variables('routeTableName'))]"
+                    			}
+		  	}
+		}
 		]
 	  }
 	},
