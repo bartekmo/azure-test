@@ -1,5 +1,5 @@
-# HA Cluster Setup for PAYG boxes
-Ths ARM template deploys a new VNet with a High Availability cluster of Barracuda NG Firewalls. A set of backend subnets will be created and routed via firewalls to provide segmentation.
+# Barracuda NG Firewall HA Cluster Setup for Azure
+This ARM template deploys a new VNet with a High Availability cluster of Barracuda NG Firewalls. Additionally, a set of backend subnets will be created and routed via firewalls to provide segmentation.
 
 [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
 
@@ -14,8 +14,6 @@ Template parameters:
 |Virtual Network Name|Name of the virtual network to create|
 |Vnet Address Space|Virtual network address range. Must be big enough to accomodate all subnets (at least /23)|
 |Gateway Subnet Name|Name of subnet for firewall instances. Note - you must not use a reserved "GatewaySubnet" name.| 
-|Primary HA Box Ip|IP address of the active box|
-|Secondary HA box IP|IP address of the secondary box(standby)|
 |Location|Data center where the boxes are created|
 |Vm Size|Size of the Azure instances used for firewalls|
 |Number of Backend Subnets|Define how many backend subnets to create. They will be named "Subnet-TierX"|
