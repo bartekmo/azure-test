@@ -146,7 +146,7 @@
 	{
         	"type": "Microsoft.Network/routeTables",
         	"name": "[variables('routeTableName')]",
-        	"apiVersion": "variables( 'apiVer' )",
+        	"apiVersion": "[variables( 'apiVer' )]",
         	"location": "[parameters('location')]",
         	"properties": {
             	"routes": [{
