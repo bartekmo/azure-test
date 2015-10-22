@@ -75,11 +75,9 @@
 			}
 		},
 		"numberOfBackendSubnets": {
-			"type": "int",
-			"defaultValue" : 3,
-			"minValue" : 1,
-			"maxValue" : 5
-			
+			"type": "string",
+			"defaultValue" : "3",
+			"allowedValues" : ["1", "2", "3" ]
 		},
 		"adminPassword": {
 			"type": "securestring",
@@ -92,7 +90,7 @@
 		"imagePublisher": "barracudanetworks",
 		"imageOffer": "barracuda-ng-firewall",
 		"imageSku": "byol",
-		"newStorageAccountName" : "[concat('ngstorage', replace(parameters('firewallVmName'), '-', ''))]",
+		"newStorageAccountName" : "[concat('ngstorage-', replace(resourceGroup().name, '-', ''))]",
 		"vmStorageAccountContainerName" : "vhds",
 		"storageAccountType" : "Standard_LRS",
 		"publicIPAddressName": "myPublicIP",
@@ -101,8 +99,8 @@
 		"adminUsername" : "will_be_replaced_by_root",
 		"osType" : "linux",
 		"numberOfInstances" : 2,
-		"lbName" : "myLoadBalancer",
-		"availabilitySetName" : "oneNGAlwaysUp",
+		"lbName" : "[concat( 'ngfLB-', replace( resourceGroup().name, '-', '' ))]",
+		"availabilitySetName" : "[concat( 'ngfHASet-', replace( resourceGroup().name, '-', '' ))]",
 		"vnetID":"[resourceId('Microsoft.Network/virtualNetworks',parameters('virtualNetworkName'))]",
 		"lbID" : "[resourceId('Microsoft.Network/loadBalancers',variables('lbName'))]",
 		"subnet1Ref" : "[concat(variables('vnetID'),'/subnets/',parameters('gatewaySubnetName'))]",
@@ -111,7 +109,7 @@
 		"lbPoolID": "[concat(variables('lbID'),'/backendAddressPools/BackendPool1')]",
 		"lbSSLProbeID": "[concat(variables('lbID'),'/probes/tcpSSLProbe')]",
 		"lbVPNProbeID": "[concat(variables('lbID'),'/probes/tcpVPNProbe')]",
-		"routeTableName": "[concat('defaultvia', replace(parameters('firewallVmName'), '-', ''))]",
+		"routeTableName": "[concat('default-via-', replace(parameters('firewallVmName'), '-', ''))]",
 		"vnetAddressSpaceSplit" : "[split( parameters( 'vnetAddressSpace' ), [ '.', '/' ])]",
 		"vnetTwoOctets" : "[concat( vnetAddressSpaceSplit[0], '.', vnetAddressSpaceSplit[1] )]",
 		"apiVer": "2015-06-15"
@@ -191,7 +189,7 @@
 		  	},
 		  	"copy" : {
 		  		"name" : "subnetsegments",
-		  		"count" : "[parameters('numberOfBackendSubnets')]"
+		  		"count" : "[int( parameters( 'numberOfBackendSubnets' ))]"
 		  	}
 		  }
 		]
