@@ -111,7 +111,7 @@
 		"lbVPNProbeID": "[concat(variables('lbID'),'/probes/tcpVPNProbe')]",
 		"routeTableName": "[concat('default-via-', replace(parameters('firewallVmName'), '-', ''))]",
 		"vnetAddressSpaceSplit" : "[split( parameters( 'vnetAddressSpace' ), '.' )]",
-		"vnetTwoOctets" : "[concat( vnetAddressSpaceSplit[0], '.', vnetAddressSpaceSplit[1] )]",
+		"vnetTwoOctets" : "[concat( variables('vnetAddressSpaceSplit')[0], '.', variables('vnetAddressSpaceSplit')[1] )]",
 		"apiVer": "2015-06-15"
 	},
 	"resources": [
