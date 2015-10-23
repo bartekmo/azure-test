@@ -107,6 +107,12 @@
 		"routeTableName": "[concat('default-via-', replace(parameters('firewallVmName'), '-', ''))]",
 		"vnetAddressSpaceSplit" : "[split( parameters( 'vnetAddressSpace' ), '.' )]",
 		"vnetTwoOctets" : "[concat( variables('vnetAddressSpaceSplit')[0], '.', variables('vnetAddressSpaceSplit')[1] )]",
+		"subnetGatewayAddress" : "[concat(variables('vnetTwoOctets'), '.', variable('vnetAddressSpaceSplit')[2], '.0/28')]",
+		"subnetTier1Address" : "[concat(variables('vnetTwoOctets'), '.', add( int( variable('vnetAddressSpaceSplit')[2]), 1 ), '.0/24')]",
+		"subnetTier2Address" : "[concat(variables('vnetTwoOctets'), '.', add( int( variable('vnetAddressSpaceSplit')[2]), 2 ), '.0/24')]",
+		"subnetTier3Address" : "[concat(variables('vnetTwoOctets'), '.', add( int( variable('vnetAddressSpaceSplit')[2]), 3 ), '.0/24')]",
+		"ngboxPrimaryIP" : "[concat(variables('vnetTwoOctets'), '.', variable('vnetAddressSpaceSplit')[2], '.4' )]",
+		"ngboxSecondaryIP" : "[concat(variables('vnetTwoOctets'), '.', variable('vnetAddressSpaceSplit')[2], '.5' )]",
 		"apiVer": "2015-06-15"
 	},
 	"resources": [
@@ -177,7 +183,7 @@
 		{
 		  	"name": "Subnet-Tier1",
 		  	"properties" : {
-		  		"addressPrefix": "[concat(variables('vnetTwoOctets'), '.1.0/24')]",
+		  		"addressPrefix": "[variables(subnetTier1Address)]",
 				"routeTable": {
                         		"id": "[resourceId('Microsoft.Network/routeTables', variables('routeTableName'))]"
                     			}
@@ -218,6 +224,7 @@
 			{
 				"name": "ipconfig1",
 				"properties": {
+					"enableIPForwarding": true,
 					"privateIPAllocationMethod": "Static",
 					"privateIPAddress" : "[parameters('primaryBoxPrivateIP')]",
 					"subnet": {
@@ -253,6 +260,7 @@
 			{
 				"name": "ipconfig2",
 				"properties": {
+					"enableIPForwarding": true,
 					"privateIPAllocationMethod": "Static",
 					"privateIPAddress" : "[parameters('secondaryBoxPrivateIP')]",
 					"subnet": {
