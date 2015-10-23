@@ -80,12 +80,12 @@
 		"vnetAddressSpaceSplit" : "[split( parameters( 'vnetAddressSpace' ), '.' )]",
 		"vnetTwoOctets" : "[concat( variables('vnetAddressSpaceSplit')[0], '.', variables('vnetAddressSpaceSplit')[1] )]",
 		"subnetGatewayName" : "FirewalGateway",
-		"subnetGatewayAddress" : "[concat(variables('vnetTwoOctets'), '.', variable('vnetAddressSpaceSplit')[2], '.0/28')]",
-		"subnetTier1Address" : "[concat(variables('vnetTwoOctets'), '.', add( int( variable('vnetAddressSpaceSplit')[2]), 1 ), '.0/24')]",
-		"subnetTier2Address" : "[concat(variables('vnetTwoOctets'), '.', add( int( variable('vnetAddressSpaceSplit')[2]), 2 ), '.0/24')]",
-		"subnetTier3Address" : "[concat(variables('vnetTwoOctets'), '.', add( int( variable('vnetAddressSpaceSplit')[2]), 3 ), '.0/24')]",
-		"ngboxPrimaryIP" : "[concat(variables('vnetTwoOctets'), '.', variable('vnetAddressSpaceSplit')[2], '.4' )]",
-		"ngboxSecondaryIP" : "[concat(variables('vnetTwoOctets'), '.', variable('vnetAddressSpaceSplit')[2], '.5' )]",
+		"subnetGatewayAddress" : "[concat(variables('vnetTwoOctets'), '.', variables('vnetAddressSpaceSplit')[2], '.0/28')]",
+		"subnetTier1Address" : "[concat(variables('vnetTwoOctets'), '.', add( int( variables('vnetAddressSpaceSplit')[2]), 1 ), '.0/24')]",
+		"subnetTier2Address" : "[concat(variables('vnetTwoOctets'), '.', add( int( variables('vnetAddressSpaceSplit')[2]), 2 ), '.0/24')]",
+		"subnetTier3Address" : "[concat(variables('vnetTwoOctets'), '.', add( int( variables('vnetAddressSpaceSplit')[2]), 3 ), '.0/24')]",
+		"ngboxPrimaryIP" : "[concat(variables('vnetTwoOctets'), '.', variables('vnetAddressSpaceSplit')[2], '.4' )]",
+		"ngboxSecondaryIP" : "[concat(variables('vnetTwoOctets'), '.', variables('vnetAddressSpaceSplit')[2], '.5' )]",
 		"apiVer": "2015-06-15"
 	},
 	"resources": [
