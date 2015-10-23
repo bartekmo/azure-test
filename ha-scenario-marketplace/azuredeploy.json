@@ -148,15 +148,15 @@
 		},
 		"subnets": [
 		{
-			"name": "[variables('subnetGatewayName')]",
+			"name": "[variables( 'subnetGatewayName' )]",
 			"properties" : {
-				"addressPrefix": "[variables('subnetGatewayAddress')]"
+				"addressPrefix": "[variables( 'subnetGatewayAddress' )]"
 			}
 		},
 		{
 		  	"name": "Subnet-Tier1",
 		  	"properties" : {
-		  		"addressPrefix": "[variables(subnetTier1Address)]",
+		  		"addressPrefix": "[variables( 'subnetTier1Address' )]",
 				"routeTable": {
                         		"id": "[resourceId('Microsoft.Network/routeTables', variables('routeTableName'))]"
                     			}
@@ -165,7 +165,7 @@
 		{
 		  	"name": "Subnet-Tier2",
 		  	"properties" : {
-		  		"addressPrefix": "[concat(variables('vnetTwoOctets'), '.2.0/24')]",
+		  		"addressPrefix": "[variables( 'subnetTier2Address' )]",
 				"routeTable": {
                         		"id": "[resourceId('Microsoft.Network/routeTables', variables('routeTableName'))]"
                     			}
@@ -174,7 +174,7 @@
 		{
 		  	"name": "Subnet-Tier3",
 		  	"properties" : {
-		  		"addressPrefix": "[concat(variables('vnetTwoOctets'), '.3.0/24')]",
+		  		"addressPrefix": "[variables( 'subnetTier3Address' )]",
 				"routeTable": {
                         		"id": "[resourceId('Microsoft.Network/routeTables', variables('routeTableName'))]"
                     			}
