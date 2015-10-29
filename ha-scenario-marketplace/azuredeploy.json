@@ -6,13 +6,13 @@
 			"type": "string",
 			"defaultValue": "BarracudaNGF",
 			"metadata": {
-				"description": "Name of the primary firewall VM"
+				"description": "Name of the primary firewall VM ('-ha' is added for form name of secondary)
 			}
 		},
 		"dnsNameForPublicIP" : {
 			"type" : "string",
 			"metadata": {
-				"description": "Unique DNS Name for the Public IP used to access the HA Cluster"
+				"description": "Unique DNS Name for the Public IP used to access the deployment"
 			}
 		},
 		"virtualNetworkName": {
@@ -43,13 +43,13 @@
 			"allowedValues" : ["Small", "Medium", "Standard_D1", "Standard_D2", "Standard_D3" ],
 			"defaultValue" : "Standard_D1",
 			"metadata": {
-				"description": "This is the size of your VM"
+				"description": "The size of your firewall VMs"
 			}
 		},
 		"adminPassword": {
 			"type": "securestring",
 			"metadata": {
-			  "description": "Admin password"
+			  "description": "Administrative password for root account"
 			}
 		}
 	},
