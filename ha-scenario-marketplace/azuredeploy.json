@@ -79,7 +79,7 @@
 		"routeTableName": "[concat('default-via-', replace(parameters('firewallVmName'), '-', ''))]",
 		"vnetAddressSpaceSplit" : "[split( parameters( 'vnetAddressSpace' ), '.' )]",
 		"vnetTwoOctets" : "[concat( variables('vnetAddressSpaceSplit')[0], '.', variables('vnetAddressSpaceSplit')[1] )]",
-		"subnetGatewayName" : "FirewalGateway",
+		"subnetGatewayName" : "FirewalSubnet",
 		"subnetGatewayAddress" : "[concat(variables('vnetTwoOctets'), '.', variables('vnetAddressSpaceSplit')[2], '.0/28')]",
 		"subnetTier1Address" : "[concat(variables('vnetTwoOctets'), '.', add( int( variables('vnetAddressSpaceSplit')[2]), 1 ), '.0/24')]",
 		"subnetTier2Address" : "[concat(variables('vnetTwoOctets'), '.', add( int( variables('vnetAddressSpaceSplit')[2]), 2 ), '.0/24')]",
@@ -332,6 +332,25 @@
 						"id": "[variables('lbVPNProbeID')]"
 					}
 				}
+			},
+			{
+				"name" : "LBRuleVPNUDP",
+				"properties" : {
+					"frontendIPConfiguration": {
+						"id": "[variables('frontEndIPConfigID')]"
+					},
+					"backendAddressPool": {
+						"id": "[variables('lbPoolID')]"
+					},
+					"protocol": "udp",
+					"frontendPort": 691,
+					"backendPort": 691,
+					"enableFloatingIP": false,
+					"idleTimeoutInMinutes": 5,
+					"probe" : {
+						"id": "[variables('lbVPNProbeID')]"
+					}
+				}
 			}
 			],
 			"probes" : [
@@ -412,7 +431,7 @@
 	{
 		"apiVersion": "2015-05-01-preview",
 		"type": "Microsoft.Compute/virtualMachines",
-		"name": "[concat(parameters('firewallVmName'),'ha')]",
+		"name": "[concat(parameters('firewallVmName'),'-HA')]",
 		"location": "[parameters('location')]",
 		"dependsOn": [
 			"[concat('Microsoft.Storage/storageAccounts/', variables('newStorageAccountName'))]",
