@@ -1,0 +1,27 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "firewallVmName": {
+      "value": "BarracudaNGFW"
+    },
+    "dnsNameForPublicIP": {
+      "value": "changeme"
+    },
+    "virtualNetworkName": {
+      "value": "myVNet"
+    },
+    "vnetAddressSpace": {
+      "value": "10.0.0.0/16"
+    },
+    "location": {
+      "value": "West Europe"
+    },
+    "instanceSize" : {
+      "value": "Standard_D1"
+    },
+    "adminPassword": {
+      "value": "ngf1r3wall"
+    }
+  }
+}
