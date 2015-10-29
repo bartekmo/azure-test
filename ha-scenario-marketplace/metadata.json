@@ -1,7 +1,7 @@
 {
-	"itemDisplayName": "Create a Virtual Network from image gallery",
-	"description": "Create a Virtual Network from image gallery",
-	"summary": "Create a Virtual Network from image gallery",
-	"githubUsername": "m-bogdan",
-	"dateUpdated": "2015-04-23"
+	"itemDisplayName": "Create a 3-tier VNet with Barracuda NextGen Firewall HA cluster",
+	"description": "This template creates a new VNet with 3 subnets (Tier1-3) routed via a High Availability cluster of Baracuda NextGen Firewalls. Note that you will not be able to access any VM inside these subnets directly as all their traffic is routed via firewalls. Traffic to any publicly accessible services running on Azure instances should be redirected on firewall using D-NAT rules. You can also use NextGen's VPN service for secure administrative access to anything inside VNet.",
+	"summary": "This template creates a new VNet with 3 subnets routed via a High Availability cluster of Baracuda NextGen Firewalls.",
+	"githubUsername": "barracudanetworks",
+	"dateUpdated": "2015-10-29"
 }
