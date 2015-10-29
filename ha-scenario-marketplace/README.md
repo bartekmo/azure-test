@@ -1,4 +1,4 @@
-# Barracuda NG Firewall HA Cluster Setup for Azure
+# Azure Segmentation with Barracuda NG Firewall HA Cluster
 This ARM template deploys a new VNet with a High Availability cluster of Barracuda NG Firewalls. Additionally, a set of backend subnets will be created and routed via firewalls to provide segmentation.
 
 [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
