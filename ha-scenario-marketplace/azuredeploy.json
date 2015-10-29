@@ -6,7 +6,7 @@
 			"type": "string",
 			"defaultValue": "BarracudaNGF",
 			"metadata": {
-				"description": "Name of the primary firewall VM (-ha is added for form name of secondary)
+				"description": "Name of the primary firewall VM ('-ha' is added for form name of secondary)"
 			}
 		},
 		"dnsNameForPublicIP" : {
